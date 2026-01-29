@@ -2,17 +2,15 @@ from langchain_ollama import ChatOllama
 
 from agents.function_explanation_agent import FunctionExplanationAgent, FunctionExplanationAgentState
 from agents.functions_extractor_agent import FunctionExtractorAgent, FunctionExtractorAgentState
-
-
+from agents.model_factory import Model, ModelFactory
 
 class CodeExtractorAgent:
-    def __init__(self, llm: ChatOllama, max_tries: int = 3):
-        self.llm = llm
+    def __init__(self, model: Model, max_tries: int = 3):
+        self.model = model
         self.max_tries = max_tries
 
-        self.functions_extractor_agent = FunctionExtractorAgent(llm, max_tries=max_tries)
-        self.function_explanation_agent = FunctionExplanationAgent(llm, max_tries=max_tries)
-
+        self.functions_extractor_agent = FunctionExtractorAgent(model, max_tries=max_tries)
+        self.function_explanation_agent = FunctionExplanationAgent(model, max_tries=max_tries)
     def __call__(self, code: str) -> dict:
         # print(code)
         initial_state: FunctionExtractorAgentState = {

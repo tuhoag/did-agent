@@ -1,0 +1,211 @@
+Hello from kg-construction!
+  0%|          | 0/3 [00:00<?, ?it/s]
+  0%|          | 0/554 [00:00<?, ?it/s][A
+  0%|          | 1/554 [00:00<02:16,  4.06it/s][A
+  0%|          | 2/554 [00:00<02:20,  3.92it/s][A
+  1%|          | 3/554 [00:26<1:50:03, 11.98s/it][A
+  1%|          | 4/554 [00:32<1:29:00,  9.71s/it][A  1%|          | 4/554 [00:34<1:17:55,  8.50s/it]
+  0%|          | 0/3 [00:34<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/cah5841/src/did-agent/kg_construction.py", line 102, in <module>
+    main()
+    ~~~~^^
+  File "/home/cah5841/src/did-agent/kg_construction.py", line 98, in main
+    find_all_libraries()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/cah5841/src/did-agent/kg_construction.py", line 86, in find_all_libraries
+    code_info = extract_library_documentation(lib)
+  File "/home/cah5841/src/did-agent/kg_construction.py", line 64, in extract_library_documentation
+    extracted_functions = extract_functions(file)
+  File "/home/cah5841/src/did-agent/kg_construction.py", line 35, in extract_functions
+    functions = agent(code)
+  File "/home/cah5841/src/did-agent/agents/code_extractor_agent.py", line 41, in __call__
+    explanation_result = self.function_explanation_agent.invoke(explanation_state)
+  File "/home/cah5841/src/did-agent/agents/function_explanation_agent.py", line 121, in invoke
+    return self.graph.invoke(initial_state)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/cah5841/src/did-agent/.venv/lib/python3.13/site-packages/langgraph/pregel/main.py", line 3071, in invoke
+    for chunk in self.stream(
+                 ~~~~~~~~~~~^
+        input,
+        ^^^^^^
+    ...<10 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    ):
+    ^
+  File "/home/cah5841/src/did-agent/.venv/lib/python3.13/site-packages/langgraph/pregel/main.py", line 2646, in stream
+    for _ in runner.tick(
+             ~~~~~~~~~~~^
+        [t for t in loop.tasks.values() if not t.writes],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        schedule_task=loop.accept_push,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "/home/cah5841/src/did-agent/.venv/lib/python3.13/site-packages/langgraph/pregel/_runner.py", line 167, in tick
+    run_with_retry(
+    ~~~~~~~~~~~~~~^
+        t,
+        ^^
+    ...<10 lines>...
+        },
+        ^^
+    )
+    ^
+  File "/home/cah5841/src/did-agent/.venv/lib/python3.13/site-packages/langgraph/pregel/_retry.py", line 42, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/cah5841/src/did-agent/.venv/lib/python3.13/site-packages/langgraph/_internal/_runnable.py", line 656, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+  File "/home/cah5841/src/did-agent/.venv/lib/python3.13/site-packages/langgraph/_internal/_runnable.py", line 400, in invoke
+    ret = self.func(*args, **kwargs)
+  File "/home/cah5841/src/did-agent/agents/function_explanation_agent.py", line 106, in validate
+    explanation, error = parse_explanation_json(state['functions_explanation_result'])
+                         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cah5841/src/did-agent/agents/function_explanation_agent.py", line 37, in parse_explanation_json
+    return parsed, error
+           ^^^^^^
+UnboundLocalError: cannot access local variable 'parsed' where it is not associated with a value
+During task with name 'validate_explanation' and id 'e6b3a8ba-cc7f-45b4-0b0e-db087728d90c'
+Hello from kg-construction!
+  0%|          | 0/3 [00:00<?, ?it/s]
+  0%|          | 0/554 [00:00<?, ?it/s][A
+  0%|          | 1/554 [00:00<02:13,  4.15it/s][A
+  0%|          | 2/554 [00:00<02:17,  4.02it/s][A  0%|          | 2/554 [00:17<1:22:31,  8.97s/it]
+  0%|          | 0/3 [00:17<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/cah5841/src/did-agent/kg_construction.py", line 102, in <module>
+    main()
+    ~~~~^^
+  File "/home/cah5841/src/did-agent/kg_construction.py", line 98, in main
+    find_all_libraries()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/cah5841/src/did-agent/kg_construction.py", line 86, in find_all_libraries
+    code_info = extract_library_documentation(lib)
+  File "/home/cah5841/src/did-agent/kg_construction.py", line 64, in extract_library_documentation
+    extracted_functions = extract_functions(file)
+  File "/home/cah5841/src/did-agent/kg_construction.py", line 35, in extract_functions
+    functions = agent(code)
+  File "/home/cah5841/src/did-agent/agents/code_extractor_agent.py", line 41, in __call__
+    explanation_result = self.function_explanation_agent.invoke(explanation_state)
+  File "/home/cah5841/src/did-agent/agents/function_explanation_agent.py", line 122, in invoke
+    return self.graph.invoke(initial_state)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/cah5841/src/did-agent/.venv/lib/python3.13/site-packages/langgraph/pregel/main.py", line 3071, in invoke
+    for chunk in self.stream(
+                 ~~~~~~~~~~~^
+        input,
+        ^^^^^^
+    ...<10 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    ):
+    ^
+  File "/home/cah5841/src/did-agent/.venv/lib/python3.13/site-packages/langgraph/pregel/main.py", line 2646, in stream
+    for _ in runner.tick(
+             ~~~~~~~~~~~^
+        [t for t in loop.tasks.values() if not t.writes],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        schedule_task=loop.accept_push,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "/home/cah5841/src/did-agent/.venv/lib/python3.13/site-packages/langgraph/pregel/_runner.py", line 167, in tick
+    run_with_retry(
+    ~~~~~~~~~~~~~~^
+        t,
+        ^^
+    ...<10 lines>...
+        },
+        ^^
+    )
+    ^
+  File "/home/cah5841/src/did-agent/.venv/lib/python3.13/site-packages/langgraph/pregel/_retry.py", line 42, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/cah5841/src/did-agent/.venv/lib/python3.13/site-packages/langgraph/_internal/_runnable.py", line 656, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+  File "/home/cah5841/src/did-agent/.venv/lib/python3.13/site-packages/langgraph/_internal/_runnable.py", line 400, in invoke
+    ret = self.func(*args, **kwargs)
+  File "/home/cah5841/src/did-agent/agents/function_explanation_agent.py", line 107, in validate
+    explanation, error = parse_explanation_json(state['functions_explanation_result'])
+                         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cah5841/src/did-agent/agents/function_explanation_agent.py", line 33, in parse_explanation_json
+    if not isinstance(parsed, FunctionInfo):
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cah5841/.local/share/uv/python/cpython-3.13.11-linux-x86_64-gnu/lib/python3.13/typing.py", line 3247, in __subclasscheck__
+    raise TypeError('TypedDict does not support instance and class checks')
+TypeError: TypedDict does not support instance and class checks
+During task with name 'validate_explanation' and id '673c3972-a831-baa6-b41b-426a1867fe18'
+Hello from kg-construction!
+  0%|          | 0/1 [00:00<?, ?it/s]
+  0%|          | 0/2 [00:00<?, ?it/s][A  0%|          | 0/2 [00:02<?, ?it/s]
+  0%|          | 0/1 [00:02<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/cah5841/src/did-agent/kg_construction.py", line 102, in <module>
+    main()
+    ~~~~^^
+  File "/home/cah5841/src/did-agent/kg_construction.py", line 98, in main
+    find_all_libraries()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/cah5841/src/did-agent/kg_construction.py", line 86, in find_all_libraries
+    code_info = extract_library_documentation(lib)
+  File "/home/cah5841/src/did-agent/kg_construction.py", line 64, in extract_library_documentation
+    extracted_functions = extract_functions(file)
+  File "/home/cah5841/src/did-agent/kg_construction.py", line 35, in extract_functions
+    functions = agent(code)
+  File "/home/cah5841/src/did-agent/agents/code_extractor_agent.py", line 41, in __call__
+    explanation_result = self.function_explanation_agent.invoke(explanation_state)
+  File "/home/cah5841/src/did-agent/agents/function_explanation_agent.py", line 122, in invoke
+    return self.graph.invoke(initial_state)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/cah5841/src/did-agent/.venv/lib/python3.13/site-packages/langgraph/pregel/main.py", line 3071, in invoke
+    for chunk in self.stream(
+                 ~~~~~~~~~~~^
+        input,
+        ^^^^^^
+    ...<10 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    ):
+    ^
+  File "/home/cah5841/src/did-agent/.venv/lib/python3.13/site-packages/langgraph/pregel/main.py", line 2646, in stream
+    for _ in runner.tick(
+             ~~~~~~~~~~~^
+        [t for t in loop.tasks.values() if not t.writes],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        schedule_task=loop.accept_push,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "/home/cah5841/src/did-agent/.venv/lib/python3.13/site-packages/langgraph/pregel/_runner.py", line 167, in tick
+    run_with_retry(
+    ~~~~~~~~~~~~~~^
+        t,
+        ^^
+    ...<10 lines>...
+        },
+        ^^
+    )
+    ^
+  File "/home/cah5841/src/did-agent/.venv/lib/python3.13/site-packages/langgraph/pregel/_retry.py", line 42, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/cah5841/src/did-agent/.venv/lib/python3.13/site-packages/langgraph/_internal/_runnable.py", line 656, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+  File "/home/cah5841/src/did-agent/.venv/lib/python3.13/site-packages/langgraph/_internal/_runnable.py", line 400, in invoke
+    ret = self.func(*args, **kwargs)
+  File "/home/cah5841/src/did-agent/agents/function_explanation_agent.py", line 107, in validate
+    explanation, error = parse_explanation_json(state['functions_explanation_result'])
+                         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cah5841/src/did-agent/agents/function_explanation_agent.py", line 33, in parse_explanation_json
+    if not isinstance(parsed, FunctionInfo):
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cah5841/.local/share/uv/python/cpython-3.13.11-linux-x86_64-gnu/lib/python3.13/typing.py", line 3247, in __subclasscheck__
+    raise TypeError('TypedDict does not support instance and class checks')
+TypeError: TypedDict does not support instance and class checks
+During task with name 'validate_explanation' and id 'dfa9beea-6a58-7931-d12b-0eabbf210d2f'

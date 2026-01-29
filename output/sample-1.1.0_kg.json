@@ -3,55 +3,14 @@
   "version": "1.1.0",
   "code": [
     {
-      "path": "./data/sample-1.1.0/src/lib.rs",
+      "path": "./data/sample-1.1.0/src/main.rs",
       "module_path": "",
       "functions": []
     },
     {
-      "path": "./data/sample-1.1.0/src/main.rs",
+      "path": "./data/sample-1.1.0/src/lib.rs",
       "module_path": "",
-      "functions": [
-        {
-          "name": "generate_key_pair",
-          "arguments": [],
-          "return_type": "(Vec<u8>, Vec<u8>)",
-          "description": "Generates a public and private key pair using a default seed and returns them as two byte vectors."
-        },
-        {
-          "name": "generate_signature",
-          "arguments": [
-            {
-              "name": "data",
-              "type": "[u8]"
-            },
-            {
-              "name": "private_key",
-              "type": "[u8]"
-            }
-          ],
-          "return_type": "Vec<u8>",
-          "description": "Generates a signature for the provided data using the given private key with Ed25519 compact algorithm."
-        },
-        {
-          "name": "verify_signature",
-          "arguments": [
-            {
-              "name": "data",
-              "type": "[u8]"
-            },
-            {
-              "name": "signature",
-              "type": "[u8]"
-            },
-            {
-              "name": "public_key",
-              "type": "[u8]"
-            }
-          ],
-          "return_type": "bool",
-          "description": "Verifies the signature of a given data using the provided public key and returns true if the verification is successful, otherwise false."
-        }
-      ]
+      "functions": []
     }
   ]
 }

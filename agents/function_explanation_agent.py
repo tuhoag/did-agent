@@ -5,6 +5,8 @@ from langgraph.graph import StateGraph, START, END
 from langchain.messages import AnyMessage, SystemMessage, HumanMessage, AIMessage
 import operator
 
+from agents.model_factory import Model, ModelFactory
+
 
 class ArgumentInfo(TypedDict):
     name: str
@@ -27,6 +29,7 @@ class FunctionExplanationAgentState(TypedDict):
 
 def parse_explanation_json(json_str: str) -> tuple[FunctionInfo, str]:
     error = ""
+    parsed: FunctionInfo = {}
     try:
         parsed = json.loads(json_str)
         if not isinstance(parsed, dict):
@@ -37,8 +40,8 @@ def parse_explanation_json(json_str: str) -> tuple[FunctionInfo, str]:
     return parsed, error
 
 class FunctionExplanationAgent:
-    def __init__(self, llm: ChatOllama, max_tries: int = 3):
-        self.llm = llm
+    def __init__(self, model: Model, max_tries: int = 3):
+        self.model = model
         self.max_tries = max_tries
 
         self.extract_system = SystemMessage(
@@ -96,7 +99,7 @@ class FunctionExplanationAgent:
         if not state['function_code'].strip():
             return {**state, "functions_explanation_result": "{}", "num_tries": num_tries}
 
-        response = self.llm.invoke(state["messages"])
+        response = self.model.invoke(state["messages"])
         # print(f"Explanation response: {response.content}")
 
         return {"functions_explanation_result": response.content, "messages": [AIMessage(content=response.content)], "num_tries": num_tries}

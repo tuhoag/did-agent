@@ -1,5 +1,6 @@
 import json
 from typing import Annotated, Optional, TypedDict
+from agents.model_factory import Model, ModelFactory
 from langchain_ollama import ChatOllama
 from langgraph.graph import StateGraph, START, END
 from langchain.messages import AnyMessage, SystemMessage, HumanMessage, AIMessage
@@ -30,8 +31,8 @@ def parse_extraction_json(json_str: str) -> tuple[list, str]:
     return parsed, error
 
 class FunctionExtractorAgent:
-    def __init__(self, llm: ChatOllama, max_tries: int = 3):
-        self.llm = llm
+    def __init__(self, model: Model, max_tries: int = 3):
+        self.model = model
         self.max_tries = max_tries
 
         self.extract_system = SystemMessage(
@@ -84,13 +85,13 @@ class FunctionExtractorAgent:
         if not state['code'].strip():
             return {**state, "functions_extraction_result": "[]", "num_tries": num_tries}
 
-        response = self.llm.invoke(state["messages"])
-        # print(f"Extraction response: {response.content}")
+        response = self.model.invoke(state["messages"])
+        print(f"Extraction response: {response}")
 
         return {"functions_extraction_result": response.content, "messages": [AIMessage(content=response.content)], "num_tries": num_tries}
 
     def validate(self, state: FunctionExtractorAgentState) -> FunctionExtractorAgentState:
-        # print("Validate extraction")
+        print("Validate extraction")
         functions_code, error = parse_extraction_json(state['functions_extraction_result'])
         # print(f"Parsed functions: {functions_code}, error: {error}")
 
