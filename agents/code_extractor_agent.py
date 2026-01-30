@@ -1,7 +1,7 @@
 from langchain_ollama import ChatOllama
 
 from agents.function_explanation_agent import FunctionExplanationAgent, FunctionExplanationAgentState
-from agents.functions_extractor_agent import FunctionExtractorAgent, FunctionExtractorAgentState
+from agents.function_extractor_agent import FunctionExtractorAgent, FunctionExtractorAgentState
 from agents.model_factory import Model, ModelFactory
 
 class CodeExtractorAgent:

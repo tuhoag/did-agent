@@ -1,5 +1,7 @@
 import json
-from typing import Annotated, Optional, TypedDict
+from typing import Annotated, Optional, TypedDict, NotRequired
+
+import re
 from agents.model_factory import Model, ModelFactory
 from langchain_ollama import ChatOllama
 from langgraph.graph import StateGraph, START, END
@@ -14,20 +16,36 @@ class FunctionExtractorAgentState(TypedDict):
     functions: list[str]
     functions_extraction_result: str
     error: Optional[str]
-    num_tries: int
-
+    num_tries: NotRequired[int]  # Default: 0
 
 
 def parse_extraction_json(json_str: str) -> tuple[list, str]:
     error = ""
     parsed = []
     try:
+        match = re.search(r'```json\s*(.*?)\s*```', json_str, re.DOTALL)
+
+        if match:
+            json_str = match.group(1)
+            print(f"Extracted JSON string: {json_str}")
+        else:
+            json_str = json_str.strip()
         parsed = json.loads(json_str)
-        if not isinstance(parsed, list):
-            error = "Output is not a JSON array."
+        if not isinstance(parsed, dict):
+            error = "Output is not a JSON object."
+        elif "functions" not in parsed:
+            error = "Missing 'functions' key in output."
+        elif not isinstance(parsed["functions"], list):
+            error = "'functions' is not a list."
+        else:
+            parsed = parsed["functions"]
     except json.JSONDecodeError as e:
         error = f"Invalid JSON: {str(e)}"
 
+    print(f"Parsed functions: {parsed}, error: {error}")
+    raise Exception("Stop here for debugging")
+    if error != "":
+        return [], error
     return parsed, error
 
 class FunctionExtractorAgent:
@@ -39,17 +57,34 @@ class FunctionExtractorAgent:
             content=(
                 """You are a code analysis agent. Extract ALL function definitions 
                 from the given code, preserving arguments and return types if present. 
-                Return the result as a JSON array of strings, where each string contains one function's code.                 
+                Return the result as a JSON object, where each string contains one function's code.                 
                 
-                Schema:                
-                [
-                    "function code 1",
-                    "function code 2",
-                ]
+                Example 1:
+                For the following code:
+                ```
+                fn add(a: i32, b: i32) -> i32 {
+                    a + b
+                }
                 
-                Requirements:
-                - Return ONLY the function code strings in a JSON array.
+                fn subtract(a: i32, b: i32) -> i32 {
+                    a - b
+                }
+                ```
+                The output should be:
+                ```json
+                {
+                    "functions":[
+                        "fn add(a: i32, b: i32) -> i32 {\n    a + b\n}",
+                        "fn subtract(a: i32, b: i32) -> i32 {\n    a - b\n}",
+                    ]
+                }
+                ```
+                
+                Strict Requirements:
                 - Preserve function signatures, including argument names and types, and return types.
+                - Return ONLY the function code strings in a JSON object with a 'functions' key.
+                - No additional text outside the JSON object.
+                - If no functions are found, return an empty list: {"functions": []}.
                 """
             )
         )
@@ -86,12 +121,12 @@ class FunctionExtractorAgent:
             return {**state, "functions_extraction_result": "[]", "num_tries": num_tries}
 
         response = self.model.invoke(state["messages"])
-        print(f"Extraction response: {response}")
+        # print(f"Extraction response: {response}")
 
         return {"functions_extraction_result": response.content, "messages": [AIMessage(content=response.content)], "num_tries": num_tries}
 
     def validate(self, state: FunctionExtractorAgentState) -> FunctionExtractorAgentState:
-        print("Validate extraction")
+        # print("Validate extraction")
         functions_code, error = parse_extraction_json(state['functions_extraction_result'])
         # print(f"Parsed functions: {functions_code}, error: {error}")
 
