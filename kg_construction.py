@@ -34,14 +34,16 @@ def extract_functions(model_factory: ModelFactory, model_name: str, file: str) -
     # read file and check how many functions are there in the file
     model = model_factory.get_model(model_name)
     agent = CodeExtractorAgent(model, max_tries=3)
-    with open(file, "r") as f:
-        code = f.read()
-        functions = agent(code)
-        # print(f"Extracted {len(functions['functions'])} functions from file {file}")
-        # print(functions)
 
-        # raise Exception("Stop here for debugging")
-        return functions
+    functions = agent(file)
+    # with open(file, "r") as f:
+    #     code = f.read()
+    #     functions = agent(code)
+    #     # print(f"Extracted {len(functions['functions'])} functions from file {file}")
+    #     # print(functions)
+
+    #     # raise Exception("Stop here for debugging")
+    return functions
 
 def extract_file_path_metadata(file_path: str) -> dict:
     metadata = {'path': file_path}
@@ -78,7 +80,7 @@ def extract_library_documentation(model_factory: ModelFactory, model_name: str, 
 
 def find_all_libraries(model_factory: ModelFactory, model_name: str):
     libraries = glob.glob(path.join(DATA_DIR, "*"))
-    libraries = ['./data/sample-1.1.0']
+    libraries = ['./data/sample-1.1.0', './data/sample-2.0.0']
     # print(f"Found {len(libraries)} libraries:")
 
     for lib in tqdm(libraries):
@@ -91,6 +93,8 @@ def find_all_libraries(model_factory: ModelFactory, model_name: str):
         lib_info.update(metadata_info)
         lib_info.update({"code": code_info})
 
+        # print(f"Extracted documentation for library {metadata_info['name']} version {metadata_info['version']} with {len(code_info)} files")
+        # raise Exception("Stop here for debugging")
         # all_libs_info.append(lib_info)
         # print(f"Library info: {json.dumps(lib_info, indent=2)}")
         json.dump(lib_info, open(get_output_path("-".join([metadata_info["name"], metadata_info["version"]])), "w"), indent=2)
@@ -100,8 +104,10 @@ def main():
     model_factory = ModelFactory()
     # model_name = "qwen2.5-coder:0.5b"
     # model_backend = "ollama"
-    model_name = "Qwen/Qwen2.5-Coder-0.5B"
+    model_name = "Qwen/Qwen2.5-Coder-0.5B-Instruct"
     model_backend = "vllm"
+    # model_name="qwen2.5-3b"
+    # model_backend="ollama"
     # model = ChatOllama(model=model_name, temperature=0)
     model_factory.register_model(model_name, model_backend)
 

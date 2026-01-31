@@ -7,37 +7,12 @@ import operator
 
 from agents.model_factory import Model, ModelFactory
 
-
-class ArgumentInfo(TypedDict):
-    name: str
-    type: str
-
-class FunctionInfo(TypedDict):
-    name: str
-    arguments: list[ArgumentInfo]
-    return_type: str
-    description: str
-
 class FunctionExplanationAgentState(TypedDict):
     messages: Annotated[list[AnyMessage], operator.add]
 
     function_code: str
-    explanation: FunctionInfo
-    functions_explanation_result: str
-    error: Optional[str]
+    explanation: Annotated[list[str], operator.add]
     num_tries: int
-
-def parse_explanation_json(json_str: str) -> tuple[FunctionInfo, str]:
-    error = ""
-    parsed: FunctionInfo = {}
-    try:
-        parsed = json.loads(json_str)
-        if not isinstance(parsed, dict):
-            error = "Output is not a JSON object."
-    except json.JSONDecodeError as e:
-        error = f"Invalid JSON: {str(e)}"
-
-    return parsed, error
 
 class FunctionExplanationAgent:
     def __init__(self, model: Model, max_tries: int = 3):
@@ -46,24 +21,7 @@ class FunctionExplanationAgent:
 
         self.extract_system = SystemMessage(
             content=(
-                """You are a code analysis agent. Explain the given function code, preserving arguments and return types if present. 
-                Return the result as a JSON object describing the function's name, arguments, return type, and a brief description.                 
-                
-                Schema:                
-                {
-                    name: "function name",
-                    arguments: [
-                        {name: "arg1", type: "type1"},
-                        {name: "arg2", type: "type2"},
-                    ],
-                    return_type: "return type",
-                    description: "brief description of the function"
-                }                    
-                
-                Requirements:                
-                - Preserve function signature, including argument names and types, and return types.
-                - Return ONLY the function explanation in a JSON object.
-                - No additional text outside the JSON object.
+                """Your task is to explain the provided Rust code. You must explain parameters, return values, and overall functionality.             
                 """
             )
         )
@@ -96,29 +54,53 @@ class FunctionExplanationAgent:
 
         num_tries = state.get("num_tries", 0) + 1
 
-        if not state['function_code'].strip():
-            return {**state, "functions_explanation_result": "{}", "num_tries": num_tries}
 
         response = self.model.invoke(state["messages"])
         # print(f"Explanation response: {response.content}")
 
-        return {"functions_explanation_result": response.content, "messages": [AIMessage(content=response.content)], "num_tries": num_tries}
+        return {"explanation": [response.content], "messages": [AIMessage(content=response.content)], "num_tries": num_tries}
 
     def validate(self, state: FunctionExplanationAgentState) -> FunctionExplanationAgentState:
         # print("Validate explanation")
-        explanation, error = parse_explanation_json(state['functions_explanation_result'])
-        # print(f"Parsed functions: {functions_code}, error: {error}")
+        validate_system = SystemMessage(
+            content=(
+                f"""Evaluate the following LLM response to the given user question. Check if the explanation correctly describes the function's parameters, return values, and overall functionality.
+                
+                User question:
+                {state["function_code"]}
 
-        if error != "":
-            error_message = SystemMessage(content=error)
-            return {**state, "error": error, "messages": [error_message]}
+                LLM response:
+                {state["explanation"]}
+                
+                Assess the response on the following dimensions:
+                    - Completeness: Does the explanation cover parameters, return values, and overall functionality?
+                    - Clarity: Is the explanation clear and easy to understand?
+                
+                For each dimension:
+                    - Give a score from 1 (poor) to 5 (excellent)
+                    - Provide a brief justification
+                    
+                Then:
+                    - List any incorrect or misleading statements, if present
+                    - Suggest specific improvements
+                    - Give an overall verdict: Excellent / Good / Fair / Poor
+                """
+            )
+        )
+        state["messages"].append(validate_system)
+        response = self.model.invoke(state["messages"])
 
-        return {**state, "explanation": explanation, "error": None}
+        return {
+            "messages": [AIMessage(content=response.content)],
+        }
+
 
     def should_continue(self, state: FunctionExplanationAgentState) -> bool:
-        if state["num_tries"] >= self.max_tries:
-            return False
-        return state["error"] is not None
+        validatation_message = state["messages"][-1].content.lower()
+        if "poor" in validatation_message and state["num_tries"] < self.max_tries:
+            return True
+
+        return False
 
     def invoke(self, initial_state: FunctionExplanationAgentState) -> FunctionExplanationAgentState:
         return self.graph.invoke(initial_state)

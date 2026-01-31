@@ -1,0 +1,21 @@
+python
+import json
+
+# Sample JSON string with extra spaces and incorrect structure
+json_string = """
+[
+    "fn add(a: i32, b: i32) -> i32 {
+        let c = a + b;
+        c
+    }",
+    "fn subtract(a: i32, b: i32) -> i32 {
+        let c = a - b;
+        c
+    }"
+]
+
+# Parse the JSON string
+data = json.loads(json_string)
+
+# Now you can use the data as needed
+print(data)
