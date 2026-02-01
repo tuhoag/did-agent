@@ -84,6 +84,9 @@ def create_training_data(functions_data):
                 "output": answer.strip(),
             })
 
+    for example in training_examples:
+        print(f"Instruction: {example['instruction']}\nOutput: {example['output']}\n{'-'*40}")
+
     return training_examples
 
 
