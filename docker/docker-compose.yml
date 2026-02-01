@@ -1,0 +1,29 @@
+services:
+  # vllm:
+  #   image: vllm/vllm-openai:latest
+  #   container_name: vllm
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     - VLLM_MODEL_NAME=Qwen/Qwen2.5-Coder-0.5B-Instruct
+  #     - VLLM_TEMPERATURE=0.0
+  #     - VLLM_LOGGING_LEVEL=DEBUG
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: all
+  #             capabilities: [gpu]
+
+
+
+  neo4j:
+    image: neo4j:latest
+    container_name: neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      - NEO4J_AUTH=neo4j/test
+      - NEO4J_dbms_security_auth__minimum__password__length=3
