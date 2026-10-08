@@ -90,4 +90,4 @@ This is a work in progress.
 - **Extraction works** on the sample crates. Only top-level `pub fn` items are extracted, so methods in `impl` blocks are not covered yet, which matters for IOTA Identity.
 - **Library selection is hardcoded** in `kg_construction.py` to the two sample crates; IOTA Identity has not been processed yet.
 - **Neo4j/Milvus retrieval** is the main path for answering questions.
-- **Fine-tuning does not work yet.** It is trained on only 6 keyword-matched examples, and the last evaluation scored 0/6: the model suggests unrelated libraries (`openssl`, `libsecp256`) instead of the project's own functions.
+- **Fine-tuning is experimental.** The training set is currently 6 hand-written queries with keyword-matched answers.
