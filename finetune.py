@@ -180,7 +180,7 @@ def setup_lora_model(model_name: str, use_cpu: bool = True):
 def finetune_model(
     model_name: str = "Qwen/Qwen2.5-Coder-0.5B-Instruct",
     output_folder: str = "output",
-    output_dir: str = "./finetuned_model",
+    output_dir: str = "./finetuned_models",
 ):
     """Fine-tune LLM model with LoRA for function retrieval."""
 
@@ -244,7 +244,7 @@ def main():
     finetune_model(
         model_name="Qwen/Qwen2.5-Coder-0.5B-Instruct",
         output_folder="output",
-        output_dir="./finetuned_model",
+        output_dir="./finetuned_models",
     )
 
 

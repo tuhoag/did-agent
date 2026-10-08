@@ -2,23 +2,24 @@
   "accuracy": 0.0,
   "correct": 0,
   "total": 6,
-  "avg_similarity": 0.03337387466556646,
+  "avg_similarity": 0.06154770485878852,
   "avg_precision": 0.0,
   "avg_recall": 0.0,
   "results": [
     {
       "query": "generate and sign a message using ed25519",
       "expected_functions": [
-        "Data",
-        "verify_ed25519_signature",
+        "public_key",
+        "data",
         "generate_ed25519_key_pair",
+        "signature",
+        "verify_ed25519_signature",
         "generate_ed25519_signature"
       ],
       "generated_functions": [
-        "libsecp256",
-        "openssl"
+        "Signature"
       ],
-      "similarity": 0.016936104695919937,
+      "similarity": 0.044589774078478,
       "precision": 0.0,
       "recall": 0.0,
       "is_correct": false
@@ -26,16 +27,17 @@
     {
       "query": "how to create ed25519 signature",
       "expected_functions": [
-        "Data",
-        "verify_ed25519_signature",
+        "public_key",
+        "data",
         "generate_ed25519_key_pair",
+        "signature",
+        "verify_ed25519_signature",
         "generate_ed25519_signature"
       ],
       "generated_functions": [
-        "powershell",
-        "cmd"
+        "ecdsa"
       ],
-      "similarity": 0.0259222333000997,
+      "similarity": 0.05739365293720459,
       "precision": 0.0,
       "recall": 0.0,
       "is_correct": false
@@ -43,13 +45,15 @@
     {
       "query": "generate cryptographic key pair",
       "expected_functions": [
-        "Data",
-        "verify_ed25519_signature",
+        "public_key",
+        "data",
         "generate_ed25519_key_pair",
+        "signature",
+        "verify_ed25519_signature",
         "generate_ed25519_signature"
       ],
       "generated_functions": [],
-      "similarity": 0.03926535782140595,
+      "similarity": 0.07313195548489666,
       "precision": 0,
       "recall": 0.0,
       "is_correct": false
@@ -57,19 +61,19 @@
     {
       "query": "verify ed25519 signature",
       "expected_functions": [
-        "Data",
-        "verify_ed25519_signature",
+        "public_key",
+        "data",
         "generate_ed25519_key_pair",
+        "signature",
+        "verify_ed25519_signature",
         "generate_ed25519_signature"
       ],
       "generated_functions": [
         "pycryptodome",
-        "False",
-        "True",
-        "sign",
-        "verify"
+        "Ed25519",
+        "cryptography"
       ],
-      "similarity": 0.05252993433758208,
+      "similarity": 0.06458191706322229,
       "precision": 0.0,
       "recall": 0.0,
       "is_correct": false
@@ -77,16 +81,21 @@
     {
       "query": "sign data with private key",
       "expected_functions": [
-        "Data",
-        "verify_ed25519_signature",
+        "public_key",
+        "data",
         "generate_ed25519_key_pair",
+        "signature",
+        "verify_ed25519_signature",
         "generate_ed25519_signature"
       ],
       "generated_functions": [
-        "SHA384",
-        "SHA256"
+        "dhparam",
+        "keygen",
+        "RSA",
+        "DH",
+        "ECDSA"
       ],
-      "similarity": 0.04259376986649714,
+      "similarity": 0.05714285714285714,
       "precision": 0.0,
       "recall": 0.0,
       "is_correct": false
@@ -94,15 +103,17 @@
     {
       "query": "create ed25519 keys",
       "expected_functions": [
-        "Data",
-        "verify_ed25519_signature",
+        "public_key",
+        "data",
         "generate_ed25519_key_pair",
+        "signature",
+        "verify_ed25519_signature",
         "generate_ed25519_signature"
       ],
       "generated_functions": [
-        "key_size"
+        "secrets"
       ],
-      "similarity": 0.022995847971893964,
+      "similarity": 0.07244607244607244,
       "precision": 0.0,
       "recall": 0.0,
       "is_correct": false

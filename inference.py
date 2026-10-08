@@ -7,7 +7,7 @@ from difflib import SequenceMatcher
 import re
 
 
-def load_finetuned_model(model_dir: str = "./finetuned_model"):
+def load_finetuned_model(model_dir: str = "./finetuned_models"):
     """Load the finetuned model and tokenizer from directory."""
     print(f"Loading finetuned model from {model_dir}...")
 
@@ -186,7 +186,7 @@ def evaluate_answers(model, tokenizer, training_examples, top_k: int = 3):
 
 def main():
     # Load finetuned model
-    model, tokenizer = load_finetuned_model("./finetuned_model")
+    model, tokenizer = load_finetuned_model("./finetuned_models")
 
     # Load training data
     print("\nLoading training data...")
